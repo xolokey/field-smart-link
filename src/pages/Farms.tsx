@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
@@ -18,6 +19,7 @@ interface Farm {
 }
 
 const Farms = () => {
+  const navigate = useNavigate();
   const [farms, setFarms] = useState<Farm[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -171,7 +173,11 @@ const Farms = () => {
                   </div>
 
                   <div className="pt-4 border-t space-y-2">
-                    <Button variant="outline" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => navigate(`/farms/${farm.id}`)}
+                    >
                       View Details
                     </Button>
                   </div>
