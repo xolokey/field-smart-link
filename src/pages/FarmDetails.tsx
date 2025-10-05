@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { ArrowLeft, MapPin, Plus, Camera, Upload, Loader2, AlertCircle } from "lucide-react";
+import { ArrowLeft, MapPin, Plus, Camera, Upload, Loader as Loader2, CircleAlert as AlertCircle } from "lucide-react";
 
 interface Farm {
   id: string;
