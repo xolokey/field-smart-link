@@ -1,17 +1,22 @@
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Loader2, Leaf, User } from "lucide-react";
+import { Send, Loader2, Leaf, User, Mic, MicOff, Image, FileText } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { AudioRecorder, blobToBase64 } from "@/utils/audioRecorder";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  imageUrl?: string;
 }
 
 const AIAdvisor = () => {
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -20,7 +25,13 @@ const AIAdvisor = () => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedDoc, setSelectedDoc] = useState<File | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const audioRecorder = useRef<AudioRecorder>(new AudioRecorder());
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -30,10 +41,68 @@ const AIAdvisor = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  const handleVoiceInput = async () => {
+    if (isRecording) {
+      try {
+        const audioBlob = await audioRecorder.current.stop();
+        setIsRecording(false);
+        
+        toast.info(t('aiAdvisor.processing'));
+        
+        const base64Audio = await blobToBase64(audioBlob);
+        
+        const { data, error } = await supabase.functions.invoke('voice-transcribe', {
+          body: { audio: base64Audio, language: i18n.language }
+        });
 
-    const userMessage: Message = { role: "user", content: input };
+        if (error) throw error;
+        
+        setInput(data.text);
+        toast.success("Transcription complete");
+      } catch (error) {
+        console.error('Voice input error:', error);
+        toast.error("Voice input failed");
+      }
+    } else {
+      try {
+        await audioRecorder.current.start();
+        setIsRecording(true);
+        toast.info(t('aiAdvisor.listening'));
+      } catch (error) {
+        console.error('Microphone error:', error);
+        toast.error("Could not access microphone");
+      }
+    }
+  };
+
+  const handleSpeak = async (text: string) => {
+    try {
+      const { data, error } = await supabase.functions.invoke('text-to-speech', {
+        body: { text, language: i18n.language }
+      });
+
+      if (error) throw error;
+
+      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+      audio.play();
+    } catch (error) {
+      console.error('Text-to-speech error:', error);
+      toast.error("Voice output failed");
+    }
+  };
+
+  const handleSend = async () => {
+    if ((!input.trim() && !selectedImage && !selectedDoc) || isLoading) return;
+
+    const userMessage: Message = { 
+      role: "user", 
+      content: input || (selectedImage ? "Image analysis request" : "Document analysis request")
+    };
+    
+    if (selectedImage) {
+      userMessage.imageUrl = URL.createObjectURL(selectedImage);
+    }
+
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -41,15 +110,32 @@ const AIAdvisor = () => {
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-agronomist`;
       
+      let bodyData: any = { 
+        messages: [...messages, userMessage].map(m => ({ 
+          role: m.role, 
+          content: m.content 
+        })),
+        language: i18n.language
+      };
+
+      if (selectedImage) {
+        const base64Image = await blobToBase64(selectedImage);
+        bodyData.image = base64Image;
+      }
+
+      if (selectedDoc) {
+        const base64Doc = await blobToBase64(selectedDoc);
+        bodyData.document = base64Doc;
+        bodyData.documentName = selectedDoc.name;
+      }
+
       const response = await fetch(CHAT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ 
-          messages: [...messages, userMessage].map(m => ({ role: m.role, content: m.content })) 
-        }),
+        body: JSON.stringify(bodyData),
       });
 
       if (!response.ok || !response.body) {
@@ -70,7 +156,6 @@ const AIAdvisor = () => {
       let textBuffer = "";
       let streamDone = false;
 
-      // Add placeholder assistant message
       setMessages(prev => [...prev, { role: "assistant", content: "" }]);
 
       while (!streamDone) {
@@ -112,6 +197,12 @@ const AIAdvisor = () => {
         }
       }
 
+      if (assistantMessage) {
+        await handleSpeak(assistantMessage);
+      }
+
+      setSelectedImage(null);
+      setSelectedDoc(null);
       setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
@@ -124,13 +215,40 @@ const AIAdvisor = () => {
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto space-y-4">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">AI Agricultural Advisor</h1>
-          <p className="text-muted-foreground">Get instant expert advice powered by Gemini AI</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">{t('aiAdvisor.title')}</h1>
+            <p className="text-muted-foreground">{t('aiAdvisor.subtitle')}</p>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => i18n.changeLanguage('en')}
+              className={i18n.language === 'en' ? 'bg-primary text-primary-foreground' : ''}
+            >
+              English
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => i18n.changeLanguage('ta')}
+              className={i18n.language === 'ta' ? 'bg-primary text-primary-foreground' : ''}
+            >
+              தமிழ்
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => i18n.changeLanguage('hi')}
+              className={i18n.language === 'hi' ? 'bg-primary text-primary-foreground' : ''}
+            >
+              हिंदी
+            </Button>
+          </div>
         </div>
 
         <Card className="flex flex-col h-[calc(100vh-250px)]">
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {messages.map((message, index) => (
               <div
@@ -152,6 +270,9 @@ const AIAdvisor = () => {
                       : "bg-muted"
                   }`}
                 >
+                  {message.imageUrl && (
+                    <img src={message.imageUrl} alt="Uploaded" className="max-w-xs rounded mb-2" />
+                  )}
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
 
@@ -168,16 +289,68 @@ const AIAdvisor = () => {
                   <Loader2 className="h-4 w-4 text-primary animate-spin" />
                 </div>
                 <div className="bg-muted rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground">Thinking...</p>
+                  <p className="text-sm text-muted-foreground">{t('aiAdvisor.thinking')}</p>
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
-          <div className="border-t p-4">
+          <div className="border-t p-4 space-y-2">
+            {(selectedImage || selectedDoc) && (
+              <div className="flex gap-2 items-center text-sm text-muted-foreground">
+                {selectedImage && <span>📷 {selectedImage.name}</span>}
+                {selectedDoc && <span>📄 {selectedDoc.name}</span>}
+              </div>
+            )}
             <div className="flex gap-2">
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
+              />
+              <input
+                ref={docInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx,.txt"
+                className="hidden"
+                onChange={(e) => setSelectedDoc(e.target.files?.[0] || null)}
+              />
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => imageInputRef.current?.click()}
+                disabled={isLoading}
+                title={t('aiAdvisor.uploadImage')}
+              >
+                <Image className="h-4 w-4" />
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => docInputRef.current?.click()}
+                disabled={isLoading}
+                title={t('aiAdvisor.uploadDocument')}
+              >
+                <FileText className="h-4 w-4" />
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleVoiceInput}
+                disabled={isLoading}
+                className={isRecording ? "bg-red-500 text-white hover:bg-red-600" : ""}
+                title={t('aiAdvisor.voiceInput')}
+              >
+                {isRecording ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+              </Button>
+
               <Textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -187,13 +360,14 @@ const AIAdvisor = () => {
                     handleSend();
                   }
                 }}
-                placeholder="Ask about crop management, pest control, irrigation..."
-                className="min-h-[60px] resize-none"
-                disabled={isLoading}
+                placeholder={t('aiAdvisor.placeholder')}
+                className="min-h-[60px] resize-none flex-1"
+                disabled={isLoading || isRecording}
               />
+              
               <Button
                 onClick={handleSend}
-                disabled={!input.trim() || isLoading}
+                disabled={(!input.trim() && !selectedImage && !selectedDoc) || isLoading || isRecording}
                 className="bg-gradient-primary"
               >
                 {isLoading ? (

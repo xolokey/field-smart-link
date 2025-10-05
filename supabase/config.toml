@@ -1,1 +1,13 @@
 project_id = "mkwoefwcndwfxzlwfpnn"
+
+[functions.ai-agronomist]
+verify_jwt = false
+
+[functions.voice-transcribe]
+verify_jwt = false
+
+[functions.text-to-speech]
+verify_jwt = false
+
+[functions.weather-alerts]
+verify_jwt = false

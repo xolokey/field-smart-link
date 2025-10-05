@@ -77,6 +77,7 @@ export type Database = {
           crop_id: string
           health_score: number | null
           id: string
+          image_urls: string[] | null
           monitoring_date: string
           notes: string | null
           soil_moisture: number | null
@@ -88,6 +89,7 @@ export type Database = {
           crop_id: string
           health_score?: number | null
           id?: string
+          image_urls?: string[] | null
           monitoring_date?: string
           notes?: string | null
           soil_moisture?: number | null
@@ -99,6 +101,7 @@ export type Database = {
           crop_id?: string
           health_score?: number | null
           id?: string
+          image_urls?: string[] | null
           monitoring_date?: string
           notes?: string | null
           soil_moisture?: number | null
@@ -190,6 +193,56 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      weather_alerts: {
+        Row: {
+          action_required: string | null
+          alert_type: string
+          created_at: string
+          expires_at: string | null
+          farm_id: string
+          id: string
+          is_active: boolean | null
+          latitude: number | null
+          longitude: number | null
+          message: string
+          severity: string
+        }
+        Insert: {
+          action_required?: string | null
+          alert_type: string
+          created_at?: string
+          expires_at?: string | null
+          farm_id: string
+          id?: string
+          is_active?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          message: string
+          severity: string
+        }
+        Update: {
+          action_required?: string | null
+          alert_type?: string
+          created_at?: string
+          expires_at?: string | null
+          farm_id?: string
+          id?: string
+          is_active?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          message?: string
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weather_alerts_farm_id_fkey"
+            columns: ["farm_id"]
+            isOneToOne: false
+            referencedRelation: "farms"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
