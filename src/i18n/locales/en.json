@@ -1,0 +1,67 @@
+{
+  "app": {
+    "title": "Lokey & Co. Agri-Fin",
+    "tagline": "Smart Agriculture Intelligence Platform"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "farms": "Farms",
+    "aiAdvisor": "AI Advisor",
+    "marketInsights": "Market Insights",
+    "logout": "Logout"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalFarms": "Total Farms",
+    "activeCrops": "Active Crops",
+    "alerts": "Alerts",
+    "efficiency": "Efficiency"
+  },
+  "farms": {
+    "title": "My Farms",
+    "addFarm": "Add Farm",
+    "name": "Farm Name",
+    "location": "Location",
+    "size": "Size (hectares)",
+    "crops": "Crops",
+    "viewDetails": "View Details",
+    "captureImages": "Capture Crop Images",
+    "uploadImage": "Upload Image",
+    "takePhoto": "Take Photo",
+    "cropHealth": "Crop Health Monitoring"
+  },
+  "aiAdvisor": {
+    "title": "AI Agricultural Advisor",
+    "subtitle": "Get instant expert advice powered by Gemini AI",
+    "placeholder": "Ask about crop management, pest control, irrigation...",
+    "voiceInput": "Voice Input",
+    "uploadImage": "Upload Image",
+    "uploadDocument": "Upload Document",
+    "listening": "Listening...",
+    "processing": "Processing...",
+    "thinking": "Thinking..."
+  },
+  "marketInsights": {
+    "title": "Market Insights",
+    "subtitle": "Real-time commodity prices and forecasts",
+    "yourLocation": "Your Location",
+    "globalMarkets": "Global Markets",
+    "detectLocation": "Detect My Location"
+  },
+  "weather": {
+    "title": "Weather & Alerts",
+    "currentWeather": "Current Weather",
+    "forecast": "Forecast",
+    "alerts": "Warnings",
+    "noAlerts": "No active alerts"
+  }
+}

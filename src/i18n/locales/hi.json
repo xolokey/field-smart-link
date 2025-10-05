@@ -1,0 +1,67 @@
+{
+  "app": {
+    "title": "लोके एंड कंपनी एग्री-फिन",
+    "tagline": "स्मार्ट कृषि बुद्धिमत्ता मंच"
+  },
+  "nav": {
+    "dashboard": "डैशबोर्ड",
+    "farms": "खेत",
+    "aiAdvisor": "AI सलाहकार",
+    "marketInsights": "बाजार जानकारी",
+    "logout": "लॉग आउट"
+  },
+  "auth": {
+    "signIn": "साइन इन करें",
+    "signUp": "साइन अप करें",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "noAccount": "खाता नहीं है?",
+    "haveAccount": "पहले से खाता है?"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "totalFarms": "कुल खेत",
+    "activeCrops": "सक्रिय फसलें",
+    "alerts": "अलर्ट",
+    "efficiency": "दक्षता"
+  },
+  "farms": {
+    "title": "मेरे खेत",
+    "addFarm": "खेत जोड़ें",
+    "name": "खेत का नाम",
+    "location": "स्थान",
+    "size": "आकार (हेक्टेयर)",
+    "crops": "फसलें",
+    "viewDetails": "विवरण देखें",
+    "captureImages": "फसल की तस्वीरें लें",
+    "uploadImage": "छवि अपलोड करें",
+    "takePhoto": "फोटो लें",
+    "cropHealth": "फसल स्वास्थ्य निगरानी"
+  },
+  "aiAdvisor": {
+    "title": "AI कृषि सलाहकार",
+    "subtitle": "जेमिनी AI द्वारा संचालित तत्काल विशेषज्ञ सलाह प्राप्त करें",
+    "placeholder": "फसल प्रबंधन, कीट नियंत्रण, सिंचाई के बारे में पूछें...",
+    "voiceInput": "आवाज़ इनपुट",
+    "uploadImage": "छवि अपलोड करें",
+    "uploadDocument": "दस्तावेज़ अपलोड करें",
+    "listening": "सुन रहा है...",
+    "processing": "प्रोसेस कर रहा है...",
+    "thinking": "सोच रहा है..."
+  },
+  "marketInsights": {
+    "title": "बाजार जानकारी",
+    "subtitle": "वास्तविक समय वस्तु मूल्य और पूर्वानुमान",
+    "yourLocation": "आपका स्थान",
+    "globalMarkets": "वैश्विक बाजार",
+    "detectLocation": "मेरा स्थान पता लगाएं"
+  },
+  "weather": {
+    "title": "मौसम और अलर्ट",
+    "currentWeather": "वर्तमान मौसम",
+    "forecast": "पूर्वानुमान",
+    "alerts": "चेतावनियां",
+    "noAlerts": "कोई सक्रिय अलर्ट नहीं"
+  }
+}
