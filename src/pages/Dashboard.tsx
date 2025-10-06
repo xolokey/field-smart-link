@@ -21,16 +21,16 @@ const Dashboard = () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const [farmsResult, cropsResult, monitoringResult] = await Promise.all([
+    const [farmsResult, cropsResult, alertsResult] = await Promise.all([
       supabase.from('farms').select('id', { count: 'exact' }).eq('user_id', user.id),
-      supabase.from('crops').select('id', { count: 'exact' }).eq('status', 'active'),
-      supabase.from('crop_monitoring').select('id', { count: 'exact' }).in('alert_level', ['warning', 'critical']),
+      supabase.from('crops').select('id, farms!inner(user_id)', { count: 'exact' }).eq('farms.user_id', user.id).eq('status', 'active'),
+      supabase.from('weather_alerts').select('id, farms!inner(user_id)', { count: 'exact' }).eq('farms.user_id', user.id).eq('is_active', true),
     ]);
 
     setStats({
       totalFarms: farmsResult.count || 0,
       activeCrops: cropsResult.count || 0,
-      alerts: monitoringResult.count || 0,
+      alerts: alertsResult.count || 0,
     });
   };
 

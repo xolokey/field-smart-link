@@ -7,13 +7,20 @@ import {
   Sprout, 
   MessageSquare, 
   TrendingUp, 
-  Settings, 
   LogOut,
   Menu,
   X,
-  Leaf
+  Leaf,
+  Languages
 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -22,6 +29,7 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t, i18n } = useTranslation();
   const [user, setUser] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -45,6 +53,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    toast.success(`Language changed to ${lang === 'en' ? 'English' : lang === 'ta' ? 'Tamil' : 'Hindi'}`);
+  };
+
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -55,10 +68,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   };
 
   const navItems = [
-    { path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { path: "/farms", label: "Farms", icon: Sprout },
-    { path: "/ai-advisor", label: "AI Advisor", icon: MessageSquare },
-    { path: "/market-insights", label: "Market Insights", icon: TrendingUp },
+    { path: "/dashboard", label: t('nav.dashboard'), icon: LayoutDashboard },
+    { path: "/farms", label: t('nav.farms'), icon: Sprout },
+    { path: "/ai-advisor", label: t('nav.aiAdvisor'), icon: MessageSquare },
+    { path: "/market-insights", label: t('nav.marketInsights'), icon: TrendingUp },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -93,8 +106,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 <Leaf className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h1 className="font-bold text-lg text-sidebar-foreground">Lokey & Co.</h1>
-                <p className="text-xs text-sidebar-foreground/60">Agri-Fin</p>
+                <h1 className="font-bold text-lg text-sidebar-foreground">{t('app.title').split('.')[0]}.</h1>
+                <p className="text-xs text-sidebar-foreground/60">{t('app.tagline')}</p>
               </div>
             </Link>
           </div>
@@ -128,13 +141,32 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <div className="px-4 py-2 text-sm text-sidebar-foreground/70">
               {user.email}
             </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-full justify-start">
+                  <Languages className="mr-2 h-4 w-4" />
+                  {i18n.language === 'en' ? 'English' : i18n.language === 'ta' ? 'தமிழ்' : 'हिंदी'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => changeLanguage('en')}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('ta')}>
+                  தமிழ் (Tamil)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('hi')}>
+                  हिंदी (Hindi)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button
               variant="outline"
               className="w-full justify-start"
               onClick={handleSignOut}
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
+              {t('nav.logout')}
             </Button>
           </div>
         </div>

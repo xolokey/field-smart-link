@@ -18,8 +18,8 @@ interface Farm {
   name: string;
   location: string;
   size_hectares: number;
-  latitude: number | null;
-  longitude: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 interface Crop {
