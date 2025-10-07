@@ -57,7 +57,9 @@
     "subtitle": "Real-time commodity prices and forecasts",
     "yourLocation": "Your Location",
     "globalMarkets": "Global Markets",
-    "detectLocation": "Detect My Location"
+    "detectLocation": "Detect My Location",
+    "news": "Agricultural News",
+    "events": "Upcoming Events"
   },
   "weather": {
     "title": "Weather & Alerts",

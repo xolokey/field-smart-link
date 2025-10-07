@@ -108,7 +108,9 @@ const AIAdvisor = () => {
     setIsLoading(true);
 
     try {
-      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ai-agronomist`;
+      const SUPABASE_URL = (import.meta as any)?.env?.VITE_SUPABASE_URL || 'https://mkwoefwcndwfxzlwfpnn.supabase.co';
+      const SUPABASE_KEY = (import.meta as any)?.env?.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rd29lZndjbmR3Znh6bHdmcG5uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk0NzQyMjUsImV4cCI6MjA3NTA1MDIyNX0.quh7s_D3ZBPgg0hg0g8nK-qvjYyVf8idhiOrGRwlavk';
+      const CHAT_URL = `${SUPABASE_URL}/functions/v1/ai-agronomist`;
       
       let bodyData: any = { 
         messages: [...messages, userMessage].map(m => ({ 
@@ -133,7 +135,7 @@ const AIAdvisor = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
         },
         body: JSON.stringify(bodyData),
       });

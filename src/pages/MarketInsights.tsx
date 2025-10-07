@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, TrendingUp, TrendingDown, Activity } from "lucide-react";
+import { MapPin, TrendingUp, TrendingDown, Activity, Newspaper, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -14,10 +14,26 @@ interface MarketData {
   region: string;
 }
 
+interface NewsItem {
+  title: string;
+  summary: string;
+  date: string;
+  source: string;
+}
+
+interface EventItem {
+  title: string;
+  date: string;
+  location: string;
+  description: string;
+}
+
 const MarketInsights = () => {
   const { t } = useTranslation();
   const [location, setLocation] = useState<{ latitude: number; longitude: number; name: string } | null>(null);
   const [marketData, setMarketData] = useState<MarketData[]>([]);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [events, setEvents] = useState<EventItem[]>([]);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
 
@@ -78,6 +94,51 @@ const MarketInsights = () => {
       ];
       
       setMarketData(mockMarketData);
+
+      const mockNews: NewsItem[] = [
+        {
+          title: "New Irrigation Technology Reduces Water Usage by 40%",
+          summary: "Farmers adopting drip irrigation systems report significant water savings and improved crop yields.",
+          date: "2025-10-06",
+          source: "Agricultural Times"
+        },
+        {
+          title: "Government Announces Subsidy for Organic Farming",
+          summary: "New policy provides financial support for farmers transitioning to organic farming methods.",
+          date: "2025-10-05",
+          source: "Farm News Daily"
+        },
+        {
+          title: "Rice Prices Expected to Rise in Q4 2025",
+          summary: "Market analysts predict a 15% increase in rice prices due to increased global demand.",
+          date: "2025-10-04",
+          source: "Commodity Market Watch"
+        }
+      ];
+
+      const mockEvents: EventItem[] = [
+        {
+          title: "Annual Agricultural Technology Expo",
+          date: "2025-10-20",
+          location: "Chennai Trade Center",
+          description: "Exhibition showcasing latest farming equipment and technologies"
+        },
+        {
+          title: "Organic Farming Workshop",
+          date: "2025-10-25",
+          location: "Cuddalore District Office",
+          description: "Free workshop on transitioning to organic farming practices"
+        },
+        {
+          title: "Crop Insurance Awareness Session",
+          date: "2025-11-01",
+          location: "Online Webinar",
+          description: "Learn about government crop insurance schemes and benefits"
+        }
+      ];
+
+      setNews(mockNews);
+      setEvents(mockEvents);
     } catch (error) {
       console.error('Error fetching market data:', error);
       toast.error("Failed to fetch market insights");
@@ -145,6 +206,60 @@ const MarketInsights = () => {
             </Card>
           ))}
         </div>
+
+        {news.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Newspaper className="h-6 w-6 text-primary" />
+              {t('marketInsights.news')}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {news.map((item, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">{item.title}</CardTitle>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span>{item.source}</span>
+                      <span>•</span>
+                      <span>{item.date}</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{item.summary}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {events.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
+              <Calendar className="h-6 w-6 text-primary" />
+              {t('marketInsights.events')}
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {events.map((item, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">{item.title}</CardTitle>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Calendar className="h-4 w-4" />
+                      <span>{item.date}</span>
+                      <span>•</span>
+                      <MapPin className="h-4 w-4" />
+                      <span>{item.location}</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
 
         {!location && !isLoadingData && (
           <Card className="border-dashed">
