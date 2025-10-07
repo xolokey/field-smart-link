@@ -15,11 +15,15 @@ serve(async (req) => {
     const { text, language = 'en' } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     
+    console.log('TTS request received:', { textLength: text?.length, language });
+    
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+      console.error('LOVABLE_API_KEY is not configured');
+      throw new Error('API key is not configured');
     }
 
     if (!text) {
+      console.error('No text provided');
       throw new Error('No text provided');
     }
 
@@ -32,6 +36,8 @@ serve(async (req) => {
 
     const voice = voiceMap[language] || 'alloy';
 
+    console.log('Calling OpenAI TTS API with voice:', voice);
+
     const response = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
       headers: {
@@ -40,11 +46,13 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'tts-1',
-        input: text,
+        input: text.substring(0, 4096), // Limit text length
         voice: voice,
         response_format: 'mp3',
       }),
     });
+
+    console.log('OpenAI TTS response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -53,7 +61,9 @@ serve(async (req) => {
     }
 
     const arrayBuffer = await response.arrayBuffer();
+    console.log('Audio buffer size:', arrayBuffer.byteLength);
     const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    console.log('TTS successful, base64 length:', base64Audio.length);
 
     return new Response(
       JSON.stringify({ audioContent: base64Audio }),

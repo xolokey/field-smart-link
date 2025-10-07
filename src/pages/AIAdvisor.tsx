@@ -77,17 +77,29 @@ const AIAdvisor = () => {
 
   const handleSpeak = async (text: string) => {
     try {
+      console.log('Starting TTS for text:', text.substring(0, 50) + '...');
+      
       const { data, error } = await supabase.functions.invoke('text-to-speech', {
-        body: { text, language: i18n.language }
+        body: { text: text.substring(0, 1000), language: i18n.language }
       });
 
-      if (error) throw error;
+      console.log('TTS response:', { hasData: !!data, error });
+
+      if (error) {
+        console.error('TTS error:', error);
+        throw error;
+      }
+
+      if (!data?.audioContent) {
+        throw new Error('No audio content received');
+      }
 
       const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-      audio.play();
+      await audio.play();
+      console.log('Audio playback started');
     } catch (error) {
       console.error('Text-to-speech error:', error);
-      toast.error("Voice output failed");
+      toast.error("Voice output failed. Please check console for details.");
     }
   };
 
