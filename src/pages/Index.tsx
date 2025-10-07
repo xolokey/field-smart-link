@@ -1,17 +1,30 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sprout, TrendingUp, MessageSquare, BarChart3, CloudSun, Leaf } from "lucide-react";
+import { Logo, LogoIcon } from "@/components/ui/logo";
+import { ArrowRight, Sprout, TrendingUp, MessageSquare, BarChart3, CloudSun } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Logo variant="full" className="text-lg" />
+            <Link to="/auth">
+              <Button variant="outline">Get Started</Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-10"></div>
         <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-              <Leaf className="h-4 w-4 text-primary" />
+              <LogoIcon size="sm" className="text-primary" />
               <span className="text-sm font-medium text-primary">Intelligent Agriculture Cloud Platform</span>
             </div>
             
@@ -22,7 +35,7 @@ const Index = () => {
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Lokey & Co. Agri-Fin combines precision agriculture, real-time monitoring, and AI advisory 
+              Field Smart Link by Lokey & Co. Homestead combines precision agriculture, real-time monitoring, and AI advisory 
               to maximize yields, optimize resources, and build climate resilience.
             </p>
             
@@ -125,7 +138,7 @@ const Index = () => {
                 
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                    <Leaf className="h-5 w-5 text-secondary" />
+                    <LogoIcon size="sm" className="text-secondary" />
                   </div>
                   <div className="flex-1 space-y-2">
                     <p className="text-sm text-muted-foreground">AI Agronomist</p>

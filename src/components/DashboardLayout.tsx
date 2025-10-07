@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { LogoIcon } from "@/components/ui/logo";
 import { 
   LayoutDashboard, 
   Sprout, 
@@ -10,7 +11,6 @@ import {
   LogOut,
   Menu,
   X,
-  Leaf,
   Languages
 } from "lucide-react";
 import { toast } from "sonner";
@@ -102,12 +102,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           {/* Logo */}
           <div className="p-6 border-b border-sidebar-border">
             <Link to="/dashboard" className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-primary/10">
-                <Leaf className="h-6 w-6 text-primary" />
-              </div>
+              <LogoIcon size="md" className="text-primary" />
               <div>
-                <h1 className="font-bold text-lg text-sidebar-foreground">{t('app.title').split('.')[0]}.</h1>
-                <p className="text-xs text-sidebar-foreground/60">{t('app.tagline')}</p>
+                <h1 className="font-bold text-lg text-sidebar-foreground">Field Smart Link</h1>
+                <p className="text-xs text-sidebar-foreground/60">Lokey & Co. Homestead</p>
               </div>
             </Link>
           </div>
