@@ -13,13 +13,13 @@ serve(async (req) => {
 
   try {
     const { text, language = 'en' } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
     
     console.log('TTS request received:', { textLength: text?.length, language });
     
-    if (!LOVABLE_API_KEY) {
-      console.error('LOVABLE_API_KEY is not configured');
-      throw new Error('API key is not configured');
+    if (!OPENAI_API_KEY) {
+      console.error('OPENAI_API_KEY is not configured');
+      throw new Error('Text-to-speech is not configured');
     }
 
     if (!text) {
@@ -30,7 +30,7 @@ serve(async (req) => {
     // Map language codes to appropriate voices
     const voiceMap: Record<string, string> = {
       'en': 'alloy',
-      'ta': 'nova',
+      'ta': 'verse',
       'hi': 'shimmer',
     };
 
@@ -41,7 +41,7 @@ serve(async (req) => {
     const response = await fetch('https://api.openai.com/v1/audio/speech', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
