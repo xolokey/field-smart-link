@@ -4,7 +4,7 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Send, Loader2, Leaf, User, Mic, MicOff, Image, FileText } from "lucide-react";
+import { Send, Loader2, Leaf, User, Mic, MicOff, Image, FileText, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AudioRecorder, blobToBase64 } from "@/utils/audioRecorder";
@@ -197,10 +197,6 @@ const AIAdvisor = () => {
         }
       }
 
-      if (assistantMessage) {
-        await handleSpeak(assistantMessage);
-      }
-
       setSelectedImage(null);
       setSelectedDoc(null);
       setIsLoading(false);
@@ -263,17 +259,31 @@ const AIAdvisor = () => {
                   </div>
                 )}
                 
-                <div
-                  className={`max-w-[80%] rounded-lg p-4 ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
-                  }`}
-                >
-                  {message.imageUrl && (
-                    <img src={message.imageUrl} alt="Uploaded" className="max-w-xs rounded mb-2" />
+                <div className="flex flex-col gap-2 max-w-[80%]">
+                  <div
+                    className={`rounded-lg p-4 ${
+                      message.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    {message.imageUrl && (
+                      <img src={message.imageUrl} alt="Uploaded" className="max-w-xs rounded mb-2" />
+                    )}
+                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  </div>
+                  {message.role === "assistant" && message.content && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleSpeak(message.content)}
+                      className="self-start"
+                      title={t('aiAdvisor.voiceOutput')}
+                    >
+                      <Volume2 className="h-3 w-3 mr-1" />
+                      {t('aiAdvisor.voiceOutput')}
+                    </Button>
                   )}
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
 
                 {message.role === "user" && (

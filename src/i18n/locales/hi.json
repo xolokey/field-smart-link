@@ -44,11 +44,13 @@
     "subtitle": "जेमिनी AI द्वारा संचालित तत्काल विशेषज्ञ सलाह प्राप्त करें",
     "placeholder": "फसल प्रबंधन, कीट नियंत्रण, सिंचाई के बारे में पूछें...",
     "voiceInput": "आवाज़ इनपुट",
+    "voiceOutput": "सुनें",
     "uploadImage": "छवि अपलोड करें",
     "uploadDocument": "दस्तावेज़ अपलोड करें",
     "listening": "सुन रहा है...",
     "processing": "प्रोसेस कर रहा है...",
-    "thinking": "सोच रहा है..."
+    "thinking": "सोच रहा है...",
+    "selectLanguage": "भाषा"
   },
   "marketInsights": {
     "title": "बाजार जानकारी",

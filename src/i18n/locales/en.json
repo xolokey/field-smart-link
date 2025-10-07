@@ -44,11 +44,13 @@
     "subtitle": "Get instant expert advice powered by Gemini AI",
     "placeholder": "Ask about crop management, pest control, irrigation...",
     "voiceInput": "Voice Input",
+    "voiceOutput": "Listen",
     "uploadImage": "Upload Image",
     "uploadDocument": "Upload Document",
     "listening": "Listening...",
     "processing": "Processing...",
-    "thinking": "Thinking..."
+    "thinking": "Thinking...",
+    "selectLanguage": "Language"
   },
   "marketInsights": {
     "title": "Market Insights",
