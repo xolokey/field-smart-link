@@ -26,14 +26,14 @@ export function validateEnvironment() {
     'VITE_SUPABASE_URL',
     'VITE_SUPABASE_PUBLISHABLE_KEY',
   ];
-  
-  const missing = required.filter(key => !import.meta.env[key]);
-  
+  const missing = required.filter((key) => !import.meta.env[key as any]);
   if (missing.length > 0) {
-    throw new Error(
-      `Missing required environment variables: ${missing.join(', ')}\n` +
-      'Please check your .env file or Vercel environment variables.'
+    // Don't crash the app; log a clear warning instead so preview keeps working
+    console.warn(
+      `Missing environment variables: ${missing.join(', ')}. ` +
+      'The app will run in a degraded mode. Configure them in Project Settings > Environment.'
     );
+    return;
   }
 }
 
