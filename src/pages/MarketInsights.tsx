@@ -85,12 +85,23 @@ const MarketInsights = () => {
 
       if (error) throw error;
 
+      // USD to INR conversion rate (approximate)
+      const USD_TO_INR = 83;
+      // 1 quintal = 100 kg
+      
       const mockMarketData: MarketData[] = [
-        { commodity: "Rice", price: 45.20, change: 2.3, region: locationName },
-        { commodity: "Wheat", price: 38.50, change: -1.2, region: locationName },
-        { commodity: "Corn", price: 32.80, change: 0.8, region: locationName },
-        { commodity: "Soybeans", price: 52.40, change: 3.1, region: locationName },
-        { commodity: "Cotton", price: 78.90, change: -0.5, region: locationName }
+        { commodity: "Rice (Basmati)", price: 45.20 * USD_TO_INR, change: 2.3, region: locationName },
+        { commodity: "Wheat", price: 38.50 * USD_TO_INR, change: -1.2, region: locationName },
+        { commodity: "Corn (Maize)", price: 32.80 * USD_TO_INR, change: 0.8, region: locationName },
+        { commodity: "Soybeans", price: 52.40 * USD_TO_INR, change: 3.1, region: locationName },
+        { commodity: "Cotton", price: 78.90 * USD_TO_INR, change: -0.5, region: locationName },
+        { commodity: "Sugarcane", price: 28.50 * USD_TO_INR, change: 1.8, region: locationName },
+        { commodity: "Groundnut", price: 65.30 * USD_TO_INR, change: 2.5, region: locationName },
+        { commodity: "Turmeric", price: 95.20 * USD_TO_INR, change: -2.1, region: locationName },
+        { commodity: "Chilli", price: 88.40 * USD_TO_INR, change: 3.7, region: locationName },
+        { commodity: "Onion", price: 25.60 * USD_TO_INR, change: 5.2, region: locationName },
+        { commodity: "Tomato", price: 22.30 * USD_TO_INR, change: -4.8, region: locationName },
+        { commodity: "Potato", price: 18.70 * USD_TO_INR, change: 1.3, region: locationName }
       ];
       
       setMarketData(mockMarketData);
@@ -189,8 +200,8 @@ const MarketInsights = () => {
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold">${item.price}</span>
-                    <span className="text-sm text-muted-foreground">/quintal</span>
+                    <span className="text-3xl font-bold">₹{item.price.toFixed(2)}</span>
+                    <span className="text-sm text-muted-foreground">/100kg</span>
                   </div>
                   <div className={`flex items-center gap-1 ${item.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {item.change >= 0 ? (
