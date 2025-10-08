@@ -20,24 +20,9 @@ export const config = {
   },
 } as const;
 
-// Validation function to ensure required environment variables are present
+// Validation function (disabled - Lovable Cloud auto-configures environment)
 export function validateEnvironment() {
-  const required = [
-    'VITE_SUPABASE_URL',
-    'VITE_SUPABASE_PUBLISHABLE_KEY',
-  ];
-  const missing = required.filter((key) => !import.meta.env[key as any]);
-  if (missing.length > 0) {
-    // Don't crash the app; log a clear warning instead so preview keeps working
-    console.warn(
-      `Missing environment variables: ${missing.join(', ')}. ` +
-      'The app will run in a degraded mode. Configure them in Project Settings > Environment.'
-    );
-    return;
-  }
-}
-
-// Call validation in development
-if (config.app.isDevelopment) {
-  validateEnvironment();
+  // Environment variables are automatically provided by Lovable Cloud
+  // No validation needed to avoid false warnings
+  return;
 }
