@@ -38,7 +38,7 @@ export function useHealthCheck() {
 
       // Check Supabase connection
       try {
-        const { error } = await supabase.from('profiles').select('count').limit(1);
+        const { error } = await supabase.auth.getSession();
         checks.supabase = !error;
       } catch {
         checks.supabase = false;
