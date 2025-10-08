@@ -11,7 +11,8 @@ import {
   LogOut,
   Menu,
   X,
-  Languages
+  Languages,
+  BarChart3
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -72,6 +73,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     { path: "/farms", label: t('nav.farms'), icon: Sprout },
     { path: "/ai-advisor", label: t('nav.aiAdvisor'), icon: MessageSquare },
     { path: "/market-insights", label: t('nav.marketInsights'), icon: TrendingUp },
+    { path: "/analytics", label: "Analytics", icon: BarChart3 },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -120,10 +122,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                   to={item.path}
                   onClick={() => setSidebarOpen(false)}
                   className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                    flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
                     ${isActive(item.path) 
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' 
-                      : 'text-sidebar-foreground hover:bg-sidebar-accent/50'
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-md' 
+                      : 'text-sidebar-foreground hover:bg-sidebar-accent/50 hover:translate-x-1'
                     }
                   `}
                 >

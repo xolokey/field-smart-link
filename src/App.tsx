@@ -14,6 +14,7 @@ import Farms from "./pages/Farms";
 import FarmDetails from "./pages/FarmDetails";
 import AIAdvisor from "./pages/AIAdvisor";
 import MarketInsights from "./pages/MarketInsights";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 // Validate environment variables on app startup
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/farms/:farmId" element={<FarmDetails />} />
             <Route path="/ai-advisor" element={<AIAdvisor />} />
             <Route path="/market-insights" element={<MarketInsights />} />
+            <Route path="/analytics" element={<Analytics />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

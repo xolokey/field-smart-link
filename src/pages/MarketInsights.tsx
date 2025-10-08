@@ -160,13 +160,19 @@ const MarketInsights = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 animate-fade-in">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2">{t('marketInsights.title')}</h1>
+            <h1 className="text-3xl font-bold mb-2 bg-gradient-primary bg-clip-text text-transparent">
+              {t('marketInsights.title')}
+            </h1>
             <p className="text-muted-foreground">{t('marketInsights.subtitle')}</p>
           </div>
-          <Button onClick={detectLocation} disabled={isLoadingLocation}>
+          <Button 
+            onClick={detectLocation} 
+            disabled={isLoadingLocation}
+            className="shadow-md hover:shadow-lg transition-all duration-200"
+          >
             <MapPin className="mr-2 h-4 w-4" />
             {isLoadingLocation ? "Detecting..." : t('marketInsights.detectLocation')}
           </Button>
@@ -190,28 +196,40 @@ const MarketInsights = () => {
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {marketData.map((item, index) => (
-            <Card key={index} className="hover:shadow-lg transition-shadow">
+            <Card 
+              key={index} 
+              className="hover:shadow-lg transition-all duration-300 hover:scale-105 animate-slide-up"
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <span>{item.commodity}</span>
+                  <span className="text-lg">{item.commodity}</span>
                   <Activity className="h-5 w-5 text-muted-foreground" />
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold">₹{item.price.toFixed(2)}</span>
+                    <span className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                      ₹{item.price.toFixed(2)}
+                    </span>
                     <span className="text-sm text-muted-foreground">/100kg</span>
                   </div>
-                  <div className={`flex items-center gap-1 ${item.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className={`flex items-center gap-1 ${item.change >= 0 ? 'text-success' : 'text-destructive'}`}>
                     {item.change >= 0 ? (
                       <TrendingUp className="h-4 w-4" />
                     ) : (
                       <TrendingDown className="h-4 w-4" />
                     )}
                     <span className="font-medium">{Math.abs(item.change)}%</span>
+                    <span className="text-xs text-muted-foreground ml-1">this week</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">Region: {item.region}</p>
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <MapPin className="h-3 w-3" />
+                      {item.region}
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -226,7 +244,11 @@ const MarketInsights = () => {
             </h2>
             <div className="grid gap-4 md:grid-cols-2">
               {news.map((item, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
+                <Card 
+                  key={index} 
+                  className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scale-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <CardHeader>
                     <CardTitle className="text-lg">{item.title}</CardTitle>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -252,7 +274,11 @@ const MarketInsights = () => {
             </h2>
             <div className="grid gap-4 md:grid-cols-2">
               {events.map((item, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
+                <Card 
+                  key={index} 
+                  className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 animate-scale-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <CardHeader>
                     <CardTitle className="text-lg">{item.title}</CardTitle>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
