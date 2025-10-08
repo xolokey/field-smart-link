@@ -1,16 +1,16 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <!-- Shield background -->
-  <path d="M16 2L6 6V16C6 22 11 27 16 30C21 27 26 22 26 16V6L16 2Z" fill="white" stroke="black" stroke-width="1"/>
+  <path d="M16 2L26 6V14C26 21 21 26 16 30C11 26 6 21 6 14V6L16 2Z" fill="#22c55e" stroke="#1f2937" stroke-width="1"/>
   
-  <!-- LE letters -->
-  <g transform="translate(8, 8)">
+  <!-- LE Letters -->
+  <g fill="white">
     <!-- L -->
-    <path d="M0 0V8H4V6H3V0H0Z" fill="black"/>
+    <path d="M9 8V20H15V18H11V8H9Z"/>
     <!-- E -->
-    <path d="M5 0V8H9V7H6V4.5H8V3.5H6V1H9V0H5Z" fill="black"/>
+    <path d="M17 8V20H23V18H19V15H22V13H19V10H23V8H17Z"/>
   </g>
   
   <!-- Keyhole -->
-  <circle cx="16" cy="22" r="1" fill="black"/>
-  <rect x="15.5" y="22" width="1" height="2" fill="black"/>
+  <circle cx="16" cy="23" r="1.5" fill="white"/>
+  <rect x="15.5" y="24" width="1" height="2" fill="white"/>
 </svg>

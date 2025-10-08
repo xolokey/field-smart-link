@@ -1,23 +1,19 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Shield background -->
-  <path d="M256 32L96 96V256C96 352 176 432 256 480C336 432 416 352 416 256V96L256 32Z" fill="white" stroke="black" stroke-width="8"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield outline -->
+  <path d="M32 4L52 10V26C52 40 42 50 32 58C22 50 12 40 12 26V10L32 4Z" fill="#22c55e" stroke="#1f2937" stroke-width="2"/>
   
-  <!-- LE letters -->
-  <g transform="translate(128, 120)">
+  <!-- Inner shield -->
+  <path d="M32 8L48 12V24C48 36 40 44 32 52C24 44 16 36 16 24V12L32 8Z" fill="white"/>
+  
+  <!-- LE Letters -->
+  <g fill="#1f2937">
     <!-- L -->
-    <path d="M0 0V120H60V80H40V0H0Z" fill="black"/>
+    <path d="M20 18V38H32V34H26V18H20Z"/>
     <!-- E -->
-    <path d="M80 0V120H140V100H100V70H130V50H100V20H140V0H80Z" fill="black"/>
+    <path d="M36 18V38H48V34H42V29H46V25H42V22H48V18H36Z"/>
   </g>
   
   <!-- Keyhole -->
-  <circle cx="256" cy="360" r="12" fill="black"/>
-  <rect x="252" y="360" width="8" height="20" fill="black"/>
-  
-  <!-- Text below shield -->
-  <g transform="translate(80, 420)" font-family="serif" font-size="32" font-weight="bold" fill="black">
-    <text x="0" y="0">LOKEY</text>
-    <text x="0" y="40">&amp;CO</text>
-    <text x="0" y="70" font-size="16" font-weight="normal">HOMESTEAD</text>
-  </g>
+  <circle cx="32" cy="44" r="2" fill="#1f2937"/>
+  <rect x="31" y="45" width="2" height="4" rx="1" fill="#1f2937"/>
 </svg>
