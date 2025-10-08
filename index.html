@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="manifest" href="/manifest.json" />
     
     <!-- Primary Meta Tags -->
     <title>Field Smart Link | Lokey & Co. Homestead</title>
@@ -20,8 +20,20 @@
     <meta name="keywords" content="precision agriculture, AI farming, crop monitoring, agricultural technology, smart farming, agri-tech, Lokey Co, homestead" />
     
     <!-- Theme Color -->
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="theme-color" content="#22c55e" />
+    <meta name="msapplication-TileColor" content="#22c55e" />
+    
+    <!-- PWA and Mobile App Configuration -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Field Smart Link" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -41,10 +53,80 @@
     <!-- Preconnect to external domains for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="//mkwoefwcndwfxzlwfpnn.supabase.co" />
+    <link rel="dns-prefetch" href="//speech.googleapis.com" />
+    <link rel="dns-prefetch" href="//texttospeech.googleapis.com" />
+    
+    <!-- Performance Hints -->
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Field Smart Link",
+      "description": "AI-powered agricultural management platform for smart farming",
+      "url": "https://field-smart-link.vercel.app/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Lokey & Co. Homestead"
+      }
+    }
+    </script>
   </head>
 
   <body>
+    <noscript>
+      <div style="text-align: center; padding: 2rem; font-family: system-ui, sans-serif;">
+        <h1>JavaScript Required</h1>
+        <p>Field Smart Link requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </noscript>
+    
     <div id="root"></div>
+    
+    <!-- Loading Fallback -->
+    <div id="loading-fallback" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #ffffff; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+      <div style="text-align: center;">
+        <div style="width: 48px; height: 48px; margin: 0 auto 16px; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="white"/>
+          </svg>
+        </div>
+        <h2 style="margin: 0 0 8px; color: #1f2937; font-size: 18px; font-weight: 600;">Field Smart Link</h2>
+        <p style="margin: 0; color: #6b7280; font-size: 14px;">Loading agricultural intelligence...</p>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+    </style>
+    
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Hide loading fallback once app loads -->
+    <script>
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const fallback = document.getElementById('loading-fallback');
+          if (fallback) {
+            fallback.style.opacity = '0';
+            fallback.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => fallback.remove(), 300);
+          }
+        }, 100);
+      });
+    </script>
   </body>
 </html>

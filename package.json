@@ -5,14 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "build:prod": "vite build --mode production",
+    "build": "npm run build:prod",
+    "build:dev": "cross-env VITE_BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ) VITE_APP_VERSION=$(node -p \"require('./package.json').version\") vite build --mode development",
+    "build:prod": "cross-env VITE_BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ) VITE_APP_VERSION=$(node -p \"require('./package.json').version\") vite build --mode production",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "vercel-build": "npm run type-check && npm run build:prod"
+    "vercel-build": "npm run type-check && npm run build:prod",
+    "analyze": "npm run build:prod && npx vite-bundle-analyzer dist/stats.html",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -86,6 +88,8 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "cross-env": "^7.0.3",
+    "vite-bundle-analyzer": "^0.7.0"
   }
 }

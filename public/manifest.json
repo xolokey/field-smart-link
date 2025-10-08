@@ -1,0 +1,93 @@
+{
+  "name": "Field Smart Link | Lokey & Co. Homestead",
+  "short_name": "Field Smart Link",
+  "description": "AI-powered agricultural management platform for smart farming",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["agriculture", "productivity", "business"],
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/placeholder.svg",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "platform": "wide",
+      "label": "Dashboard view showing farm analytics and AI insights"
+    },
+    {
+      "src": "/placeholder.svg",
+      "sizes": "750x1334",
+      "type": "image/svg+xml",
+      "platform": "narrow",
+      "label": "Mobile view of AI agricultural advisor chat interface"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View farm overview and analytics",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "AI Advisor",
+      "short_name": "AI Chat",
+      "description": "Chat with AI agricultural expert",
+      "url": "/ai-advisor",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Farms",
+      "short_name": "Farms",
+      "description": "Manage your farms and crops",
+      "url": "/farms",
+      "icons": [
+        {
+          "src": "/logo.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

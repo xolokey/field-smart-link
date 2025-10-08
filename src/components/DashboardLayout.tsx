@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogoIcon } from "@/components/ui/logo";
+import { NotificationCenter } from "@/components/NotificationCenter";
 import { 
   LayoutDashboard, 
   Sprout, 
@@ -12,15 +13,19 @@ import {
   Menu,
   X,
   Languages,
-  BarChart3
+  BarChart3,
+  Settings,
+  User
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { analytics, trackUserAction } from "@/utils/analytics";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface DashboardLayoutProps {
@@ -40,6 +45,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         navigate("/auth");
       } else {
         setUser(session.user);
+        analytics.setUserId(session.user.id);
+        analytics.track('dashboard_accessed');
       }
     });
 
@@ -48,6 +55,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         navigate("/auth");
       } else {
         setUser(session.user);
+        analytics.setUserId(session.user.id);
       }
     });
 
@@ -56,10 +64,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
+    trackUserAction('language_changed', 'dropdown', { language: lang });
     toast.success(`Language changed to ${lang === 'en' ? 'English' : lang === 'ta' ? 'Tamil' : 'Hindi'}`);
   };
 
   const handleSignOut = async () => {
+    trackUserAction('sign_out', 'button');
     const { error } = await supabase.auth.signOut();
     if (error) {
       toast.error("Error signing out");
@@ -84,13 +94,49 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-card shadow-md"
-      >
-        {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-      </button>
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-border">
+        <div className="flex items-center justify-between p-4">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 rounded-lg bg-card shadow-md"
+          >
+            {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+          
+          <div className="flex items-center gap-2">
+            <LogoIcon size="sm" className="text-primary" />
+            <span className="font-semibold text-sm">Field Smart Link</span>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <NotificationCenter />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <User className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => changeLanguage('en')}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('ta')}>
+                  தமிழ் (Tamil)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => changeLanguage('hi')}>
+                  हिंदी (Hindi)
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  {t('nav.logout')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
 
       {/* Sidebar */}
       <aside
@@ -138,9 +184,17 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
           {/* User Section */}
           <div className="p-4 border-t border-sidebar-border space-y-2">
-            <div className="px-4 py-2 text-sm text-sidebar-foreground/70">
+            <div className="px-4 py-2 text-sm text-sidebar-foreground/70 truncate">
               {user.email}
             </div>
+            
+            <div className="hidden lg:flex items-center justify-between mb-2">
+              <NotificationCenter />
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <Settings className="h-4 w-4" />
+              </Button>
+            </div>
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full justify-start">
@@ -182,7 +236,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
-        <div className="container mx-auto p-6 lg:p-8">
+        <div className="container mx-auto p-6 lg:p-8 pt-20 lg:pt-6">
           {children}
         </div>
       </main>
