@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": "dist",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
@@ -128,11 +128,5 @@
         }
       ]
     }
-  ],
-
-  "functions": {
-    "supabase/functions/*/index.ts": {
-      "runtime": "edge"
-    }
-  }
+  ]
 }
