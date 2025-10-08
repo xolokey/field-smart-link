@@ -1,16 +1,27 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Shield background -->
-  <path d="M16 2L26 6V14C26 21 21 26 16 30C11 26 6 21 6 14V6L16 2Z" fill="#22c55e" stroke="#1f2937" stroke-width="1"/>
+  <!-- Shield background with gradient -->
+  <defs>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
   
-  <!-- LE Letters -->
-  <g fill="white">
+  <!-- Shield outline -->
+  <path d="M16 2L26 6V14C26 21 21 26 16 30C11 26 6 21 6 14V6L16 2Z" fill="url(#shieldGradient)" stroke="#1f2937" stroke-width="1.5"/>
+  
+  <!-- Inner shield area -->
+  <path d="M16 4L24 7V13C24 19 20 23 16 27C12 23 8 19 8 13V7L16 4Z" fill="white" opacity="0.95"/>
+  
+  <!-- LE Letters - styled to match the logo -->
+  <g fill="#1f2937" font-family="serif" font-weight="bold">
     <!-- L -->
-    <path d="M9 8V20H15V18H11V8H9Z"/>
+    <path d="M10 9V19H16V17H12V9H10Z"/>
     <!-- E -->
-    <path d="M17 8V20H23V18H19V15H22V13H19V10H23V8H17Z"/>
+    <path d="M18 9V19H24V17H20V15H23V13H20V11H24V9H18Z"/>
   </g>
   
-  <!-- Keyhole -->
-  <circle cx="16" cy="23" r="1.5" fill="white"/>
-  <rect x="15.5" y="24" width="1" height="2" fill="white"/>
+  <!-- Keyhole with better proportions -->
+  <circle cx="16" cy="22" r="1.2" fill="#1f2937"/>
+  <rect x="15.4" y="22.8" width="1.2" height="2" rx="0.6" fill="#1f2937"/>
 </svg>
